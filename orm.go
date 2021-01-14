@@ -8,12 +8,14 @@ package ORMDemo
 
 import (
 	"database/sql"
+	"github.com/ztaoing/ORMDemo/dialect"
 	"github.com/ztaoing/ORMDemo/log"
 	"github.com/ztaoing/ORMDemo/session"
 )
 
 type Engine struct {
-	db *sql.DB
+	db      *sql.DB
+	dialect dialect.Dialect
 }
 
 func (e *Engine) Close() {
@@ -24,7 +26,7 @@ func (e *Engine) Close() {
 }
 
 func (e *Engine) NewSession() *session.Session {
-	return session.NewSession(e.db)
+	return session.NewSession(e.db, e.dialect)
 }
 
 func NewEngine(driver, source string) (e *Engine, err error) {
@@ -39,8 +41,13 @@ func NewEngine(driver, source string) (e *Engine, err error) {
 		log.Error(err)
 		return
 	}
+	dial, ok := dialect.GetDialect(driver)
+	if !ok {
+		log.Errorf("dialect %s not find", driver)
+	}
 	e = &Engine{
-		db: db,
+		db:      db,
+		dialect: dial,
 	}
 	log.Info("connect database success")
 	return

@@ -16,7 +16,7 @@ var (
 	mu      sync.Mutex
 
 	Error  = errLog.Println
-	ErrorF = errLog.Printf
+	Errorf = errLog.Printf
 	Info   = infoLog.Println
 	Infof  = infoLog.Printf
 )

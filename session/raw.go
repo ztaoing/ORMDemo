@@ -1,26 +1,31 @@
 /**
 * @Author:zhoutao
 * @Date:2021/1/13 下午4:10
-* @Desc:用于实现与数据库的交互
+* @Desc:Session用于实现与数据库的交互
  */
 
 package session
 
 import (
 	"database/sql"
+	"github.com/ztaoing/ORMDemo/dialect"
 	"github.com/ztaoing/ORMDemo/log"
+	"github.com/ztaoing/ORMDemo/schema"
 	"strings"
 )
 
 type Session struct {
-	db      *sql.DB
-	sql     strings.Builder //拼接SQL语句
-	sqlVars []interface{}   //SQL语句中占位符的对应值
+	db       *sql.DB
+	sql      strings.Builder //拼接SQL语句
+	sqlVars  []interface{}   //SQL语句中占位符的对应值
+	dialect  dialect.Dialect
+	refTable *schema.Schema
 }
 
-func NewSession(db *sql.DB) *Session {
+func NewSession(db *sql.DB, dialect dialect.Dialect) *Session {
 	return &Session{
-		db: db,
+		db:      db,
+		dialect: dialect,
 	}
 }
 
