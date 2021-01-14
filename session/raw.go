@@ -24,6 +24,7 @@ func NewSession(db *sql.DB) *Session {
 	}
 }
 
+// 清空后session可以复用，开启一次会话可以执行多次SQL
 func (s *Session) Clear() {
 	s.sql.Reset()
 	s.sqlVars = nil
