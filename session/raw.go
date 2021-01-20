@@ -8,6 +8,7 @@ package session
 
 import (
 	"database/sql"
+	"github.com/ztaoing/ORMDemo/clause"
 	"github.com/ztaoing/ORMDemo/dialect"
 	"github.com/ztaoing/ORMDemo/log"
 	"github.com/ztaoing/ORMDemo/schema"
@@ -20,6 +21,7 @@ type Session struct {
 	sqlVars  []interface{}   //SQL语句中占位符的对应值
 	dialect  dialect.Dialect
 	refTable *schema.Schema
+	clause   clause.Clause
 }
 
 func NewSession(db *sql.DB, dialect dialect.Dialect) *Session {
@@ -33,6 +35,7 @@ func NewSession(db *sql.DB, dialect dialect.Dialect) *Session {
 func (s *Session) Clear() {
 	s.sql.Reset()
 	s.sqlVars = nil
+	s.clause = clause.Clause{}
 
 }
 
